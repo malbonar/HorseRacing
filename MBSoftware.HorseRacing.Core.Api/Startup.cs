@@ -31,8 +31,6 @@ namespace MBSoftware.HorseRacing.Core.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            //services.AddDbContext<AzureHorseRatingsDbContext>(options =>
-            //    options.UseSqlServer(Configuration["ConnectionStrings:HorseRacingSqlServer"]));
             services.Configure<ConnectionStringConfig>(Configuration.GetSection("connectionStrings"));
             services.AddScoped<ITrainerJockeyFormLineProvider, TrainerJockeyFormDataService>();
             services.AddScoped<IDbContextFactory, DbContextProvider>();
