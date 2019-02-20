@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBSoftware.HorseRacing.Core.Api", "MBSoftware.HorseRacing.Core.Api\MBSoftware.HorseRacing.Core.Api.csproj", "{FE71FF1C-9C20-481D-98EE-840E78D4516F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MBSoftware.HorseRacing.Core.Api", "MBSoftware.HorseRacing.Core.Api\MBSoftware.HorseRacing.Core.Api.csproj", "{FE71FF1C-9C20-481D-98EE-840E78D4516F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MBSoftware.HorseRacing.Core.DAL", "MBSoftware.HorseRacing.Core.DAL\MBSoftware.HorseRacing.Core.DAL.csproj", "{BC9F5CCF-A6A8-4DD2-861E-ED62C9EDDC4F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MBSoftwareSolutions.HorseRacing.Core.Types", "MBSoftwareSolutions.HorseRacing.Core.Types\MBSoftwareSolutions.HorseRacing.Core.Types.csproj", "{FFCCF822-6041-4CDA-8412-49A714FAF261}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MBSoftware.HorseRacing.Core.DataServices", "MBSoftware.HorseRacing.Core.DataServices\MBSoftware.HorseRacing.Core.DataServices.csproj", "{0CF559D8-D039-4015-9A2B-85371029FF88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{FE71FF1C-9C20-481D-98EE-840E78D4516F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE71FF1C-9C20-481D-98EE-840E78D4516F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE71FF1C-9C20-481D-98EE-840E78D4516F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC9F5CCF-A6A8-4DD2-861E-ED62C9EDDC4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC9F5CCF-A6A8-4DD2-861E-ED62C9EDDC4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC9F5CCF-A6A8-4DD2-861E-ED62C9EDDC4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC9F5CCF-A6A8-4DD2-861E-ED62C9EDDC4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFCCF822-6041-4CDA-8412-49A714FAF261}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFCCF822-6041-4CDA-8412-49A714FAF261}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFCCF822-6041-4CDA-8412-49A714FAF261}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFCCF822-6041-4CDA-8412-49A714FAF261}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CF559D8-D039-4015-9A2B-85371029FF88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CF559D8-D039-4015-9A2B-85371029FF88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CF559D8-D039-4015-9A2B-85371029FF88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CF559D8-D039-4015-9A2B-85371029FF88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
