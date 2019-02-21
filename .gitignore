@@ -1,3 +1,13 @@
 *.suo
 .vs/
 MBSoftware.HorseRacing.Core.Api/obj/
+MBSoftware.HorseRacing.Core.Api/bin
+/MBSoftwareSolutions.HorseRacing.Core.Types/obj
+/MBSoftwareSolutions.HorseRacing.Core.Types/bin
+/MBSoftware.HorseRacing.Core.DAL/obj
+/MBSoftware.HorseRacing.Core.DAL/bin
+/MBSoftware.HorseRacing.Core.Tests/bin
+/MBSoftware.HorseRacing.Core.Tests/obj
+/MBSoftware.HorseRacing.Core.DAL/App.config
+/MBSoftware.HorseRacing.Core.DataServices/bin/Debug/netcoreapp2.2
+/MBSoftware.HorseRacing.Core.DataServices/obj
