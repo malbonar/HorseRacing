@@ -11,3 +11,5 @@ MBSoftware.HorseRacing.Core.Api/bin
 /MBSoftware.HorseRacing.Core.DAL/App.config
 /MBSoftware.HorseRacing.Core.DataServices/bin/Debug/netcoreapp2.2
 /MBSoftware.HorseRacing.Core.DataServices/obj
+/MBSoftware.HorseRacing.Core.DataServices/bin/Release/netcoreapp2.2
+/MBSoftware.HorseRacing.Core.Api/Properties/PublishProfiles
