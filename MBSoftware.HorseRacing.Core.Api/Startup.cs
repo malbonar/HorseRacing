@@ -30,6 +30,7 @@ namespace MBSoftware.HorseRacing.Core.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.Configure<ConnectionStringConfig>(Configuration.GetSection("connectionStrings"));
             services.AddScoped<ITrainerJockeyFormLineProvider, TrainerJockeyFormDataService>();
@@ -48,7 +49,8 @@ namespace MBSoftware.HorseRacing.Core.Api
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-                        
+
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod());
             app.UseHttpsRedirection();
             app.UseMvc();
             Mapper.Initialize(cfg => cfg.CreateMap<TrainerJockeyComboFormWebEntities, TrainerJockeyFormLine>());

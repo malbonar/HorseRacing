@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MBSoftwareSolutions.HorseRacing.Core.Types;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,10 +25,18 @@ namespace MBSoftware.HorseRacing.Core.DataServices
         {
             using(var ctx = _dbProvider.GetHorseRatingsDbContext())
             {
-                // use automapper to map from Entity class to POCO class
-                var formLines = await ctx.TrainerJockeyComboFormWebEntities.Select(x => Mapper.Map<TrainerJockeyFormLine>(x))
-                    .ToListAsync();
-                return formLines;
+                try
+                {
+                    // use automapper to map from Entity class to POCO class
+                    var formLines = await ctx.TrainerJockeyComboFormWebEntities.Select(x => Mapper.Map<TrainerJockeyFormLine>(x))
+                        .ToListAsync();
+                    return formLines;
+                }
+                catch(Exception ex)
+                {
+                    // log
+                    return new List<TrainerJockeyFormLine>();
+                }
             }
         }
     }
