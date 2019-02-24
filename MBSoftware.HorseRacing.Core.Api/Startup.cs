@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using MBSoftware.HorseRacing.Core.DAL;
 using MBSoftware.HorseRacing.Core.DataServices;
 using MBSoftwareSolutions.HorseRacing.Core.Types;
 using Microsoft.AspNetCore.Builder;
@@ -34,6 +33,7 @@ namespace MBSoftware.HorseRacing.Core.Api
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.Configure<ConnectionStringConfig>(Configuration.GetSection("connectionStrings"));
             services.AddScoped<ITrainerJockeyFormLineProvider, TrainerJockeyFormDataService>();
+            services.AddScoped<IRaceMeetingProvider, RaceMeetingDataService>();
             services.AddScoped<IDbContextFactory, DbContextProvider>();
         }
 
@@ -53,7 +53,11 @@ namespace MBSoftware.HorseRacing.Core.Api
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod());
             app.UseHttpsRedirection();
             app.UseMvc();
-            Mapper.Initialize(cfg => cfg.CreateMap<TrainerJockeyComboFormWebEntities, TrainerJockeyFormLine>());
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<DAL.TrainerJockeyComboFormWebEntities, TrainerJockeyFormLine>();
+                cfg.CreateMap<DAL.HorseRace, HorseRace>();
+            });
         }
     }
 }
