@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace MBSoftware.HorseRacing.Core.DAL
 {
+    /// <summary>
+    /// EF class representing row from the table of the same name
+    /// </summary>
     public partial class TrainerJockeyComboFormWebEntities
     {
         public int TrainerJockeyComboFormEntityId { get; set; }
@@ -17,6 +20,7 @@ namespace MBSoftware.HorseRacing.Core.DAL
         public decimal PlacedProfitLoss { get; set; }
         public decimal Ae { get; set; }
         public decimal Iv { get; set; }
-        public string FormType { get; set; }
+        public int Days { get; set; }
+        public DateTime RaceDate { get; set; }
     }
 }

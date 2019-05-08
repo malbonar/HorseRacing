@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace MBSoftwareSolutions.HorseRacing.Core.Types
 {
     /// <summary>
@@ -18,6 +19,7 @@ namespace MBSoftwareSolutions.HorseRacing.Core.Types
         public decimal PlacedProfitLoss { get; set; }
         public decimal AE { get; set; }
         public decimal IV { get; set; }
-        public string FormType { get; set; }
+        public int Days { get; set; }
+        public DateTime RaceDate { get; set; }
     }
 }
