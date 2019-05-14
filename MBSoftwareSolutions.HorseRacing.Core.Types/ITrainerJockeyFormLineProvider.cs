@@ -9,6 +9,6 @@ namespace MBSoftwareSolutions.HorseRacing.Core.Types
     /// </summary>
     public interface ITrainerJockeyFormLineProvider
     {
-        Task<List<TrainerJockeyFormLine>> FetchTrainerJockeyCombo14DayFormAsync();
+        Task<List<TrainerJockeyFormLine>> FetchTrainerJockeyCombo14DayFormAsync(DateTime raceDate);
     }
 }

@@ -21,14 +21,16 @@ namespace MBSoftware.HorseRacing.Core.DataServices
             _dbProvider = dbProvider;
         }
                 
-        public async Task<List<TrainerJockeyFormLine>> FetchTrainerJockeyCombo14DayFormAsync()
+        public async Task<List<TrainerJockeyFormLine>> FetchTrainerJockeyCombo14DayFormAsync(DateTime raceDate)
         {
             using(var ctx = _dbProvider.GetHorseRatingsDbContext())
             {
                 try
                 {
                     // use automapper to map from Entity class to POCO class
-                    var formLines = await ctx.TrainerJockeyComboFormWebEntities.Select(x => Mapper.Map<TrainerJockeyFormLine>(x))
+                    var formLines = await ctx.TrainerJockeyComboFormWebEntities
+                        .Where(x => x.RaceDate.Date == raceDate.Date)
+                        .Select(x => Mapper.Map<TrainerJockeyFormLine>(x))
                         .ToListAsync();
                     return formLines;
                 }

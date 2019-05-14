@@ -25,7 +25,11 @@ namespace MBSoftware.HorseRacing.Core.Api.Controllers
         {
             try
             {
-                var stats = await _ctx.FetchTrainerJockeyCombo14DayFormAsync();
+                // source data is basis UK date so always search basis that timezone
+                var britishZone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
+                var ukDate = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.Utc, britishZone);
+
+                var stats = await _ctx.FetchTrainerJockeyCombo14DayFormAsync(ukDate);
                 return Ok(stats);
             }
             catch(Exception ex)
