@@ -17,22 +17,17 @@ namespace MBSoftware.HorseRacing.Core.Api.Controllers
         }
 
         /// <summary>
-        /// api/TrainerJockeyForm
+        /// api/TrainerJockeyForm?days=14&racedate=16-may-2019
         /// </summary>
-        /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(int days, DateTime raceDate)
         {
             try
             {
-                // source data is basis UK date so always search basis that timezone
-                var britishZone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
-                var ukDate = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.Utc, britishZone);
-
-                var stats = await _ctx.FetchTrainerJockeyCombo14DayFormAsync(ukDate);
+                var stats = await _ctx.FetchTrainerJockeyComboFormAsync(days, raceDate);
                 return Ok(stats);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 // log detailed error
                 // todo log
