@@ -41,5 +41,27 @@ namespace MBSoftware.HorseRacing.Core.DataServices
                 }
             }
         }
+
+        public async Task<List<TrainerJockeyFormLine>> FetchTrainerJockeyComboFormAsync(int days, DateTime raceDate)
+        {
+            using (var ctx = _dbProvider.GetHorseRatingsDbContext())
+            {
+                try
+                {
+                    // use automapper to map from Entity class to POCO class
+                    var formLines = await ctx.TrainerJockeyComboFormWebEntities
+                        .Where(x => x.RaceDate.Date == raceDate.Date && x.Days == days)
+                        .Select(x => Mapper.Map<TrainerJockeyFormLine>(x))
+                        .OrderBy(x => x.Trainer).ThenBy(x => x.Jockey)
+                        .ToListAsync();
+                    return formLines;
+                }
+                catch (Exception ex)
+                {
+                    // log
+                    return new List<TrainerJockeyFormLine>();
+                }
+            }
+        }
     }
 }
