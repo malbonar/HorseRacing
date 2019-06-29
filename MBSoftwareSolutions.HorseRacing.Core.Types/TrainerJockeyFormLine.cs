@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MBSoftwareSolutions.HorseRacing.Core.Types
 {
@@ -8,6 +9,7 @@ namespace MBSoftwareSolutions.HorseRacing.Core.Types
     /// </summary>
     public class TrainerJockeyFormLine
     {
+        public int TrainerJockeyComboFormEntityId { get; set; }
         public string Trainer { get; set; }
         public string Jockey { get; set; }
         public int Runs { get; set; }
@@ -21,5 +23,11 @@ namespace MBSoftwareSolutions.HorseRacing.Core.Types
         public decimal IV { get; set; }
         public int Days { get; set; }
         public DateTime RaceDate { get; set; }
+        public List<TrainerJockeyFormLineHorse> TrainerJockeyComboFormHorse { get; set; }
+
+        public TrainerJockeyFormLine()
+        {
+            TrainerJockeyComboFormHorse = new List<TrainerJockeyFormLineHorse>();
+        }
     }
 }

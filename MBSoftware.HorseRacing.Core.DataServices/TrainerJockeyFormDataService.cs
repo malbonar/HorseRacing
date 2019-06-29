@@ -29,6 +29,7 @@ namespace MBSoftware.HorseRacing.Core.DataServices
                 {
                     // use automapper to map from Entity class to POCO class
                     var formLines = await ctx.TrainerJockeyComboFormWebEntities
+                        .Include(x => x.TrainerJockeyComboFormHorse)
                         .Where(x => x.RaceDate.Date == raceDate.Date)
                         .Select(x => Mapper.Map<TrainerJockeyFormLine>(x))
                         .ToListAsync();
@@ -50,11 +51,12 @@ namespace MBSoftware.HorseRacing.Core.DataServices
                 {
                     // use automapper to map from Entity class to POCO class
                     var formLines = await ctx.TrainerJockeyComboFormWebEntities
+                        .Include(x => x.TrainerJockeyComboFormHorse)
                         .Where(x => x.RaceDate.Date == raceDate.Date && x.Days == days)
                         .Select(x => Mapper.Map<TrainerJockeyFormLine>(x))
-                        .OrderBy(x => x.Trainer).ThenBy(x => x.Jockey)
                         .ToListAsync();
-                    return formLines;
+
+                    return formLines.OrderBy(x => x.Trainer).ThenBy(x => x.Jockey).ToList();
                 }
                 catch (Exception ex)
                 {

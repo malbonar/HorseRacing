@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using MBSoftwareSolutions.HorseRacing.Core.Types;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,10 +11,12 @@ namespace MBSoftware.HorseRacing.Core.Api.Controllers
     public class TrainerJockeyFormController : ControllerBase
     {
         private ITrainerJockeyFormLineProvider _ctx;
+        private readonly ILogger<TrainerJockeyFormController> _logger;
 
-        public TrainerJockeyFormController(ITrainerJockeyFormLineProvider ctx)
+        public TrainerJockeyFormController(ITrainerJockeyFormLineProvider ctx, ILogger<TrainerJockeyFormController> logger)
         {
-            _ctx = ctx;            
+            _ctx = ctx;
+            _logger = logger;
         }
 
         /// <summary>
@@ -29,9 +32,7 @@ namespace MBSoftware.HorseRacing.Core.Api.Controllers
             }
             catch (Exception ex)
             {
-                // log detailed error
-                // todo log
-
+                _logger.LogError($"Failed to GET TrainerJockeyForm: {ex.InnerException?.Message ?? ex.Message}");
                 return BadRequest("Error occurred during data fetch of Trainer Jockey form data");
             }
         }

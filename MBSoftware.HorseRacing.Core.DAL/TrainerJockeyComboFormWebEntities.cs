@@ -3,11 +3,13 @@ using System.Collections.Generic;
 
 namespace MBSoftware.HorseRacing.Core.DAL
 {
-    /// <summary>
-    /// EF class representing row from the table of the same name
-    /// </summary>
     public partial class TrainerJockeyComboFormWebEntities
     {
+        public TrainerJockeyComboFormWebEntities()
+        {
+            TrainerJockeyComboFormHorse = new HashSet<TrainerJockeyComboFormHorse>();
+        }
+
         public int TrainerJockeyComboFormEntityId { get; set; }
         public string Trainer { get; set; }
         public string Jockey { get; set; }
@@ -22,5 +24,7 @@ namespace MBSoftware.HorseRacing.Core.DAL
         public decimal Iv { get; set; }
         public int Days { get; set; }
         public DateTime RaceDate { get; set; }
+
+        public virtual ICollection<TrainerJockeyComboFormHorse> TrainerJockeyComboFormHorse { get; set; }
     }
 }

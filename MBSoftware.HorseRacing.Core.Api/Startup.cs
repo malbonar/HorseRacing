@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MBSoftware.HorseRacing.Core.DataServices;
 using MBSoftwareSolutions.HorseRacing.Core.Types;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -55,7 +57,9 @@ namespace MBSoftware.HorseRacing.Core.Api
             app.UseMvc();
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<DAL.TrainerJockeyComboFormWebEntities, TrainerJockeyFormLine>();
+                cfg.CreateMap<DAL.TrainerJockeyComboFormHorse, TrainerJockeyFormLineHorse>();
+                cfg.CreateMap<DAL.TrainerJockeyComboFormWebEntities, TrainerJockeyFormLine>()
+                    .ForMember(dest => dest.TrainerJockeyComboFormHorse, act => act.MapFrom(src => src.TrainerJockeyComboFormHorse));
                 cfg.CreateMap<DAL.HorseRace, HorseRace>();
             });
         }

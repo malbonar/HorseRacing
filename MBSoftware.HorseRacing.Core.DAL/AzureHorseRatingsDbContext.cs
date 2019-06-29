@@ -1,19 +1,10 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using System;
 using System.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace MBSoftware.HorseRacing.Core.DAL
 {
-    /// <summary>
-    /// Created from an existing database
-    /// Microsoft.EntityFrameworkCore
-    /// Microsoft.EntityFrameworkCore.Tools
-    /// Microsoft.EntityFrameworkCore.SqlServer
-    /// Microsoft.EntityFrameworkCore.SqlServer.Design
-    /// Opened the nuget Package Manager console:
-    /// Scaffold-DbContext "Data Source=conn string;"
-    /// parameter prompted - Microsoft.EntityFrameworkcore.SqlServer
-    /// </summary>
     public partial class AzureHorseRatingsDbContext : DbContext
     {
         /// <summary>
@@ -26,7 +17,6 @@ namespace MBSoftware.HorseRacing.Core.DAL
         /// <summary>
         /// Web-API accesses db via this ctor and passes connection string in options
         /// </summary>
-        /// <param name="options"></param>
         public AzureHorseRatingsDbContext(DbContextOptions<AzureHorseRatingsDbContext> options)
             : base(options)
         {
@@ -34,6 +24,7 @@ namespace MBSoftware.HorseRacing.Core.DAL
 
         public virtual DbSet<HorseRace> HorseRace { get; set; }
         public virtual DbSet<HorseRaceRunner> HorseRaceRunner { get; set; }
+        public virtual DbSet<TrainerJockeyComboFormHorse> TrainerJockeyComboFormHorse { get; set; }
         public virtual DbSet<TrainerJockeyComboFormWebEntities> TrainerJockeyComboFormWebEntities { get; set; }
 
         /// <summary>
@@ -45,7 +36,8 @@ namespace MBSoftware.HorseRacing.Core.DAL
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(ConfigurationManager.AppSettings["HorseRacingSqlServerConnectionString"]);
+                optionsBuilder.UseSqlServer(ConfigurationManager.AppSettings["HorseRacingSqlServerConnectionString"],
+                    sqlServerOptions => sqlServerOptions.CommandTimeout(90));
             }
         }
 
@@ -103,6 +95,10 @@ namespace MBSoftware.HorseRacing.Core.DAL
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Form)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.GoingForm)
                     .HasMaxLength(20)
                     .IsUnicode(false);
@@ -114,8 +110,16 @@ namespace MBSoftware.HorseRacing.Core.DAL
 
                 entity.Property(e => e.HorseRaceWebEntityHorseRaceWebEntityId).HasColumnName("HorseRaceWebEntity_HorseRaceWebEntityId");
 
+                entity.Property(e => e.Jockey)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.JockeyHorseSummary)
                     .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Odds)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Ormove).HasColumnName("ORMove");
@@ -126,12 +130,52 @@ namespace MBSoftware.HorseRacing.Core.DAL
 
                 entity.Property(e => e.TissueTotal).HasColumnType("decimal(18, 2)");
 
+                entity.Property(e => e.Trainer)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Ts).HasColumnName("TS");
 
                 entity.HasOne(d => d.HorseRaceWebEntityHorseRaceWebEntity)
                     .WithMany(p => p.HorseRaceRunner)
                     .HasForeignKey(d => d.HorseRaceWebEntityHorseRaceWebEntityId)
                     .HasConstraintName("FK_dbo.HorseRaceRunner_dbo.HorseRace_HorseRaceWebEntity_HorseRaceWebEntityId");
+            });
+
+            modelBuilder.Entity<TrainerJockeyComboFormHorse>(entity =>
+            {
+                entity.Property(e => e.Course)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Form)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.HorseName)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Odds)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.RaceTime)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Weight)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.TrainerJockeyComboFormEntity)
+                    .WithMany(p => p.TrainerJockeyComboFormHorse)
+                    .HasForeignKey(d => d.TrainerJockeyComboFormEntityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_dbo.TrainerJockeyComboFormHorse_TrainerJockeyComboForm");
             });
 
             modelBuilder.Entity<TrainerJockeyComboFormWebEntities>(entity =>
@@ -155,6 +199,8 @@ namespace MBSoftware.HorseRacing.Core.DAL
 
                 entity.Property(e => e.PlacedProfitLoss).HasColumnType("decimal(18, 2)");
 
+                entity.Property(e => e.RaceDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Trainer)
                     .HasMaxLength(100)
                     .IsUnicode(false);
@@ -163,6 +209,10 @@ namespace MBSoftware.HorseRacing.Core.DAL
 
                 entity.Property(e => e.WinProfitLoss).HasColumnType("decimal(18, 2)");
             });
+
+            OnModelCreatingPartial(modelBuilder);
         }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
