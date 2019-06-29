@@ -24,6 +24,11 @@ namespace MBSoftware.HorseRacing.Core.DAL
         public int? ClassMove { get; set; }
         public int OfficialRating { get; set; }
         public string Weight { get; set; }
+        public string Trainer { get; set; }
+        public string Jockey { get; set; }
+        public int? Age { get; set; }
+        public string Form { get; set; }
+        public string Odds { get; set; }
 
         public virtual HorseRace HorseRaceWebEntityHorseRaceWebEntity { get; set; }
     }
