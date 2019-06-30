@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MBSoftwareSolutions.HorseRacing.Core.Types;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,12 @@ namespace MBSoftware.HorseRacing.Core.DataServices
     public class TrainerJockeyFormDataService : ITrainerJockeyFormLineProvider
     {
         private IDbContextFactory _dbProvider;
+        private readonly ILogger<TrainerJockeyFormDataService> _logger;
 
-        public TrainerJockeyFormDataService(IDbContextFactory dbProvider)
+        public TrainerJockeyFormDataService(IDbContextFactory dbProvider, ILogger<TrainerJockeyFormDataService> logger)
         {
             _dbProvider = dbProvider;
+            _logger = logger;
         }
                 
         public async Task<List<TrainerJockeyFormLine>> FetchTrainerJockeyCombo14DayFormAsync(DateTime raceDate)
@@ -56,11 +59,17 @@ namespace MBSoftware.HorseRacing.Core.DataServices
                         .Select(x => Mapper.Map<TrainerJockeyFormLine>(x))
                         .ToListAsync();
 
-                    return formLines.OrderBy(x => x.Trainer).ThenBy(x => x.Jockey).ToList();
+                    formLines = formLines.OrderBy(x => x.Trainer).ThenBy(x => x.Jockey).ToList();
+                    formLines.ForEach(f =>
+                    {
+                        f.TrainerJockeyComboFormHorse = f.TrainerJockeyComboFormHorse.OrderBy(h => h.Course).ThenBy(h => h.RaceTime).ToList();
+                    });
+
+                    return formLines;
                 }
                 catch (Exception ex)
                 {
-                    // log
+                    _logger.LogError("FetchTrainerJockeyComboFormAsync threw exception", ex);
                     return new List<TrainerJockeyFormLine>();
                 }
             }
