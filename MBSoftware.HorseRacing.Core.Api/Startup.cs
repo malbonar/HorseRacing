@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using MBSoftware.HorseRacing.Core.Api.Middleware;
 using MBSoftware.HorseRacing.Core.DataServices;
 using MBSoftwareSolutions.HorseRacing.Core.Types;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -37,6 +42,26 @@ namespace MBSoftware.HorseRacing.Core.Api
             services.AddScoped<ITrainerJockeyFormLineProvider, TrainerJockeyFormDataService>();
             services.AddScoped<IRaceMeetingProvider, RaceMeetingDataService>();
             services.AddScoped<IDbContextFactory, DbContextProvider>();
+            services.AddResponseCaching();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://mbsoftwaresolutions.auth0.com/";
+                    options.Audience = "https://horseracing/";
+                });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("read:trainerjockeystats",
+                    policy => policy.Requirements.Add(new HasScopeRequirement("read:trainerjockeystats", "https://mbsoftwaresolutions.auth0.com/")));
+            });
+
+            // register the scope authorization handler
+            services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,8 +77,24 @@ namespace MBSoftware.HorseRacing.Core.Api
                 app.UseHsts();
             }
 
-            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod());
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseHttpsRedirection();
+            app.UseResponseCaching();
+            app.UseAuthentication();
+            app.UseExceptionHandler(options =>
+            {
+                options.Run(async context =>
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    context.Response.ContentType = "text/plain";
+                    var ex = context.Features.Get<IExceptionHandlerFeature>();
+                    if (ex != null)
+                    {
+                        // log details
+                    }
+                    await context.Response.WriteAsync("Internal server error processing request").ConfigureAwait(false);
+                });
+            });
             app.UseMvc();
             Mapper.Initialize(cfg =>
             {
