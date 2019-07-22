@@ -7,6 +7,7 @@ namespace MBSoftware.HorseRacing.Core.DAL
     {
         public TrainerJockeyComboFormWebEntities()
         {
+            TrainerJockeyComboFormHistory = new HashSet<TrainerJockeyComboFormHistory>();
             TrainerJockeyComboFormHorse = new HashSet<TrainerJockeyComboFormHorse>();
         }
 
@@ -25,6 +26,7 @@ namespace MBSoftware.HorseRacing.Core.DAL
         public int Days { get; set; }
         public DateTime RaceDate { get; set; }
 
+        public virtual ICollection<TrainerJockeyComboFormHistory> TrainerJockeyComboFormHistory { get; set; }
         public virtual ICollection<TrainerJockeyComboFormHorse> TrainerJockeyComboFormHorse { get; set; }
     }
 }

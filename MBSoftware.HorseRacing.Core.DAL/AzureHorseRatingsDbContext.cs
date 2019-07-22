@@ -7,16 +7,10 @@ namespace MBSoftware.HorseRacing.Core.DAL
 {
     public partial class AzureHorseRatingsDbContext : DbContext
     {
-        /// <summary>
-        /// Manual access via this ctor and OnConfiguring method using connection string from app.config
-        /// </summary>
         public AzureHorseRatingsDbContext()
         {
         }
 
-        /// <summary>
-        /// Web-API accesses db via this ctor and passes connection string in options
-        /// </summary>
         public AzureHorseRatingsDbContext(DbContextOptions<AzureHorseRatingsDbContext> options)
             : base(options)
         {
@@ -24,6 +18,7 @@ namespace MBSoftware.HorseRacing.Core.DAL
 
         public virtual DbSet<HorseRace> HorseRace { get; set; }
         public virtual DbSet<HorseRaceRunner> HorseRaceRunner { get; set; }
+        public virtual DbSet<TrainerJockeyComboFormHistory> TrainerJockeyComboFormHistory { get; set; }
         public virtual DbSet<TrainerJockeyComboFormHorse> TrainerJockeyComboFormHorse { get; set; }
         public virtual DbSet<TrainerJockeyComboFormWebEntities> TrainerJockeyComboFormWebEntities { get; set; }
 
@@ -140,6 +135,51 @@ namespace MBSoftware.HorseRacing.Core.DAL
                     .WithMany(p => p.HorseRaceRunner)
                     .HasForeignKey(d => d.HorseRaceWebEntityHorseRaceWebEntityId)
                     .HasConstraintName("FK_dbo.HorseRaceRunner_dbo.HorseRace_HorseRaceWebEntity_HorseRaceWebEntityId");
+            });
+
+            modelBuilder.Entity<TrainerJockeyComboFormHistory>(entity =>
+            {
+                entity.Property(e => e.Aw).HasColumnName("AW");
+
+                entity.Property(e => e.Course)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.HorseName)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Jockey)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Odds)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.RaceTime)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.RaceType)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Trainer)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.TrainerJockeyComboFormEntity)
+                    .WithMany(p => p.TrainerJockeyComboFormHistory)
+                    .HasForeignKey(d => d.TrainerJockeyComboFormEntityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TrainerJockeyComboFormHistory_TrainerJockeyComboFormWebEntities");
             });
 
             modelBuilder.Entity<TrainerJockeyComboFormHorse>(entity =>
