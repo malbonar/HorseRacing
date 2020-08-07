@@ -9,7 +9,7 @@ namespace MBSoftwareSolutions.HorseRacing.Core.Types
     /// </summary>
     public class TrainerJockeyFormLine
     {
-        public int TrainerJockeyComboFormEntityId { get; set; }
+        public int TrainerJockeyComboFormId { get; set; }
         public string Trainer { get; set; }
         public string Jockey { get; set; }
         public int Runs { get; set; }

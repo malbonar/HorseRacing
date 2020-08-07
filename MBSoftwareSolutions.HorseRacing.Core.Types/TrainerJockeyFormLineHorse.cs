@@ -9,8 +9,8 @@ namespace MBSoftwareSolutions.HorseRacing.Core.Types
     public class TrainerJockeyFormLineHorse
     {
         public int TrainerJockeyComboFormHorseId { get; set; }
-        public int TrainerJockeyComboFormEntityId { get; set; }
-        public DateTimeOffset RaceDate { get; set; }
+        public int TrainerJockeyComboFormId { get; set; }
+        public DateTime RaceDate { get; set; }
         public string Course { get; set; }
         public string RaceTime { get; set; }
         public string HorseName { get; set; }
