@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using MBSoftwareSolutions.HorseRacing.Core.Types;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +29,8 @@ namespace MBSoftware.HorseRacing.Core.Api.Controllers
             {
                 // log..
 
-                return BadRequest("Error fetching race meetings");
+                // return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                return new OkObjectResult(ex.StackTrace);
             }
         }
     }

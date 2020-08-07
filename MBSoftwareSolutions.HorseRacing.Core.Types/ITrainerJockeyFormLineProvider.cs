@@ -12,5 +12,6 @@ namespace MBSoftwareSolutions.HorseRacing.Core.Types
         Task<List<TrainerJockeyFormLine>> FetchTrainerJockeyCombo14DayFormAsync(DateTime raceDate);
 
         Task<List<TrainerJockeyFormLine>> FetchTrainerJockeyComboFormAsync(int days, DateTime raceDate);
+        Task<List<TrainerJockeyFormLine>> FetchTrainerJockeyComboFormAsync(int days);
     }
 }

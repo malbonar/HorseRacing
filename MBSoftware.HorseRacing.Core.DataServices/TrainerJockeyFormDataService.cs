@@ -31,7 +31,7 @@ namespace MBSoftware.HorseRacing.Core.DataServices
                 try
                 {
                     // use automapper to map from Entity class to POCO class
-                    var formLines = await ctx.TrainerJockeyComboFormWebEntities
+                    var formLines = await ctx.TrainerJockeyComboForm
                         .Include(x => x.TrainerJockeyComboFormHorse)
                         .Where(x => x.RaceDate.Date == raceDate.Date)
                         .Select(x => Mapper.Map<TrainerJockeyFormLine>(x))
@@ -53,7 +53,40 @@ namespace MBSoftware.HorseRacing.Core.DataServices
                 try
                 {
                     // use automapper to map from Entity class to POCO class
-                    var formLines = await ctx.TrainerJockeyComboFormWebEntities
+                    var formLines = await ctx.TrainerJockeyComboForm
+                        .Include(x => x.TrainerJockeyComboFormHorse)
+                        .Where(x => x.RaceDate.Date == raceDate.Date && x.Days == days)
+                        .Select(x => Mapper.Map<TrainerJockeyFormLine>(x))
+                        .ToListAsync();
+
+                    formLines = formLines.OrderBy(x => x.Trainer).ThenBy(x => x.Jockey).ToList();
+                    formLines.ForEach(f =>
+                    {
+                        f.TrainerJockeyComboFormHorse = f.TrainerJockeyComboFormHorse.OrderBy(h => h.Course).ThenBy(h => h.RaceTime).ToList();
+                    });
+
+                    return formLines;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError("FetchTrainerJockeyComboFormAsync threw exception", ex);
+                    return new List<TrainerJockeyFormLine>();
+                }
+            }
+        }
+
+        public async Task<List<TrainerJockeyFormLine>> FetchTrainerJockeyComboFormAsync(int days)
+        {
+            using (var ctx = _dbProvider.GetHorseRatingsDbContext())
+            {
+                try
+                {
+                    var raceDate = ctx.TrainerJockeyComboForm.Max(x => x.RaceDate);
+                    if (raceDate == DateTime.MinValue)
+                        return new List<TrainerJockeyFormLine>();
+
+                    // use automapper to map from Entity class to POCO class
+                    var formLines = await ctx.TrainerJockeyComboForm
                         .Include(x => x.TrainerJockeyComboFormHorse)
                         .Where(x => x.RaceDate.Date == raceDate.Date && x.Days == days)
                         .Select(x => Mapper.Map<TrainerJockeyFormLine>(x))

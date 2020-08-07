@@ -31,6 +31,8 @@ namespace MBSoftware.HorseRacing.Core.DataServices
         {
             return new AzureHorseRatingsDbContext(new DbContextOptionsBuilder<AzureHorseRatingsDbContext>()
                     .UseSqlServer(_connectionStrings.AppDbConnection)
+                    // .EnableSensitiveDataLogging()
+                    // .EnableDetailedErrors()
                     .Options);
         }
     }

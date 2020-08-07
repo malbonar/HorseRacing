@@ -1,0 +1,30 @@
+
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS Build
+WORKDIR /src
+# copy csproj and restore as distinct layers
+COPY *.sln .
+COPY MBSoftwareSolutions.HorseRacing.Core.Types/*.csproj ./MBSoftwareSolutions.HorseRacing.Core.Types/
+COPY MBSoftware.HorseRacing.Core.DAL/*.csproj ./MBSoftware.HorseRacing.Core.DAL/
+COPY MBSoftware.HorseRacing.Core.DataServices/*.csproj ./MBSoftware.HorseRacing.Core.DataServices/
+COPY MBSoftware.HorseRacing.Core.Api/*.csproj ./MBSoftware.HorseRacing.Core.Api/
+RUN dotnet restore
+
+
+# copy and publish app and libraries
+COPY MBSoftwareSolutions.HorseRacing.Core.Types/. ./MBSoftwareSolutions.HorseRacing.Core.Types/
+COPY MBSoftware.HorseRacing.Core.DAL/. ./MBSoftware.HorseRacing.Core.DAL/
+COPY MBSoftware.HorseRacing.Core.DataServices/. ./MBSoftware.HorseRacing.Core.DataServices/
+COPY MBSoftware.HorseRacing.Core.Api/. ./MBSoftware.HorseRacing.Core.Api/
+RUN dotnet publish -c release -o /app
+
+
+# final stage/image
+FROM microsoft/dotnet:2.2-aspnetcore-runtime
+WORKDIR /app
+
+EXPOSE 80
+EXPOSE 443
+
+COPY --from=Build /app .
+ENTRYPOINT ["dotnet", "MBSoftware.HorseRacing.Core.Api.dll"]
+

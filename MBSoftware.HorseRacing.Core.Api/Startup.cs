@@ -38,10 +38,6 @@ namespace MBSoftware.HorseRacing.Core.Api
         {
             services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.Configure<ConnectionStringConfig>(Configuration.GetSection("connectionStrings"));
-            services.AddScoped<ITrainerJockeyFormLineProvider, TrainerJockeyFormDataService>();
-            services.AddScoped<IRaceMeetingProvider, RaceMeetingDataService>();
-            services.AddScoped<IDbContextFactory, DbContextProvider>();
             services.AddResponseCaching();
             services.AddAuthentication(options =>
             {
@@ -57,11 +53,27 @@ namespace MBSoftware.HorseRacing.Core.Api
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("read:trainerjockeystats",
-                    policy => policy.Requirements.Add(new HasScopeRequirement("read:trainerjockeystats", "https://mbsoftwaresolutions.auth0.com/")));
+                    policy => policy.Requirements.Add(
+                        new HasScopeRequirement("read:trainerjockeystats", "https://mbsoftwaresolutions.auth0.com/")));
+                options.AddPolicy("read:racecards",
+                     policy => policy.Requirements.Add(
+                         new HasScopeRequirement("read:racecards", "https://mbsoftwaresolutions.auth0.com/")));
             });
 
             // register the scope authorization handler
             services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+
+            services.Configure<ConnectionStringConfig>(Configuration.GetSection("connectionStrings"));
+            services.AddScoped<ITrainerJockeyFormLineProvider, TrainerJockeyFormDataService>();
+            services.AddScoped<IRaceMeetingProvider, RaceMeetingDataService>();
+            services.AddScoped<IRaceCardProvider, RaceMeetingDataService>();
+            services.AddScoped<IHorsesForConditionsProvider, BettingAngulesDataService>();
+            services.AddScoped<IDbContextFactory, DbContextProvider>();
+
+            services.AddLogging(loggingBuilder => {
+                loggingBuilder.AddConsole();
+                loggingBuilder.AddDebug();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -99,9 +111,13 @@ namespace MBSoftware.HorseRacing.Core.Api
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<DAL.TrainerJockeyComboFormHorse, TrainerJockeyFormLineHorse>();
-                cfg.CreateMap<DAL.TrainerJockeyComboFormWebEntities, TrainerJockeyFormLine>()
+                cfg.CreateMap<DAL.TrainerJockeyComboForm, TrainerJockeyFormLine>()
                     .ForMember(dest => dest.TrainerJockeyComboFormHorse, act => act.MapFrom(src => src.TrainerJockeyComboFormHorse));
-                cfg.CreateMap<DAL.HorseRace, HorseRace>();
+                cfg.CreateMap<DAL.RaceCardHorse, HorseRaceRunner>();
+                cfg.CreateMap<DAL.RaceCard, RaceCard>()
+                    .ForMember(dest => dest.Horses, act => act.MapFrom(src => src.RaceCardHorse));
+                cfg.CreateMap<DAL.RaceCardHorseHistory, HorsePreviousRun>();
+                cfg.CreateMap<DAL.HorsesForConditions, HorseForConditions>();
             });
         }
     }

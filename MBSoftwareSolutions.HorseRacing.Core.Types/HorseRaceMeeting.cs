@@ -8,21 +8,21 @@ namespace MBSoftwareSolutions.HorseRacing.Core.Types
     {
         public HorseRaceMeeting()
         {
-            Races = new List<HorseRace>();
+            Races = new List<RaceCard>();
             Course = "";
         }
 
-        public int RaceMeetingId { get; set; }
+        public int RaceId { get; set; }
 
         public string Course { get; set; }
 
-        public DateTime RaceDate { get; set; }
+        public DateTime RaceMeetingDate { get; set; }
 
         public string Going { get; set; }
 
-        public List<HorseRace> Races { get; set; }
+        public List<RaceCard> Races { get; set; }
 
-        public static IEnumerable<HorseRaceMeeting> ExtractRaceMeetings(List<HorseRace> races)
+        public static IEnumerable<HorseRaceMeeting> ExtractRaceMeetings(List<RaceCard> races)
         {
             var meetings = new List<HorseRaceMeeting>();
 
@@ -34,9 +34,9 @@ namespace MBSoftwareSolutions.HorseRacing.Core.Types
                     var meeting = new HorseRaceMeeting
                     {
                         Course = meetingRaces.Key,
-                        RaceDate = meetingRaces.First().RaceDate,
+                        RaceMeetingDate = meetingRaces.First().RaceDate,
                         Going = meetingRaces.First().Going,
-                        Races = meetingRaces.ToList()
+                        Races = meetingRaces.OrderBy(x => DateTime.Parse(x.RaceTime + " PM").TimeOfDay).ToList()
                     };
 
                     meetings.Add(meeting);
