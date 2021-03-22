@@ -20,6 +20,14 @@ namespace MBSoftware.HorseRacing.Core.Api.Controllers
             _raceCardProvider = raceCardProvider;
         }
 
+        /// <summary>
+        /// Fetch Horses for race on today's card. Authorised access
+        /// </summary>
+        /// <param name="id">Race Identifier</param>
+        /// <returns>Horses declared to run in this race</returns>
+        /// <response code="200">Returns runners for race</response>
+        /// <response code="401">Unauthorised access. Request must be made from known application</response>
+        /// <response code="500">Internal error processing the request</response>
         [HttpGet]
         [Route("{id}/horses")]
         [Authorize(Policy = "read:racecards")]
@@ -36,6 +44,15 @@ namespace MBSoftware.HorseRacing.Core.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Fetch details for a horse race on today's card. Authorised access
+        /// </summary>
+        /// <param name="course">Course where horse race is to be run</param>
+        /// <param name="raceTime">Time race will be run</param>
+        /// <returns>Race details</returns>
+        /// <response code="200">Returns race details</response>
+        /// <response code="401">Unauthorised access. Request must be made from known application</response>
+        /// <response code="500">Internal error processing the request</response>
         [HttpGet]
         [Authorize(Policy = "read:racecards")]
         public IActionResult GetRaceCard(string course, string raceTime)
@@ -51,6 +68,14 @@ namespace MBSoftware.HorseRacing.Core.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Fetch previous runs of all horses in a race from today's card. Authorised access
+        /// </summary>
+        /// <param name="raceId"></param>
+        /// <returns></returns>
+        /// <response code="200">Returns previous runs of all horses in race</response>
+        /// <response code="401">Unauthorised access. Request must be made from known application</response>
+        /// <response code="500">Internal error processing the request</response>
         [HttpGet]
         [Authorize(Policy = "read:racecards")]
         [Route("GetPreviousRuns/{raceId}")]

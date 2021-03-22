@@ -22,8 +22,14 @@ namespace MBSoftware.HorseRacing.Core.Api.Controllers
         }
 
         /// <summary>
-        /// api/TrainerJockeyForm?days=14&racedate=16-may-2019
+        /// Fetch Trainer / Jockey form analysis basis a specified date and either 14 or 30 day form. Authorised access
         /// </summary>
+        /// <param name="days">form basis 14 or 30 days</param>
+        /// <param name="raceDate">Form data as at this date</param>
+        /// <returns>Trainer / Jockey form analysis</returns>
+        /// <response code="200">Returns Trainer / Jockey form analysis</response>
+        /// <response code="401">Unauthorised access. Request must be made from known application</response>
+        /// <response code="500">Internal error processing the request</response>
         [HttpGet]
         [Authorize(Policy = "read:trainerjockeystats")]
         public async Task<IActionResult> Get(int days, DateTime raceDate)
@@ -41,8 +47,13 @@ namespace MBSoftware.HorseRacing.Core.Api.Controllers
         }
 
         /// <summary>
-        /// api/TrainerJockeyForm?days=14
+        /// Fetch Trainer / Jockey form analysis basis most recent loaded date and either 14 or 30 day form. Authorised access
         /// </summary>
+        /// <param name="days"></param>
+        /// <returns>Trainer / Jockey form analysis</returns>
+        /// <response code="200">Returns Trainer / Jockey form analysis</response>
+        /// <response code="401">Unauthorised access. Request must be made from known application</response>
+        /// <response code="500">Internal error processing the request</response>
         [HttpGet]
         //[ResponseCache(VaryByQueryKeys = ["days"])]
         [Route("GetLatest")]
