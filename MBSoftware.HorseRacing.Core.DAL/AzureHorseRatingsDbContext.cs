@@ -22,6 +22,9 @@ namespace MBSoftware.HorseRacing.Core.DAL
         public virtual DbSet<TrainerJockeyComboForm> TrainerJockeyComboForm { get; set; }
         public virtual DbSet<TrainerJockeyComboFormHistory> TrainerJockeyComboFormHistory { get; set; }
         public virtual DbSet<TrainerJockeyComboFormHorse> TrainerJockeyComboFormHorse { get; set; }
+        public virtual DbSet<RaceResult> RaceResults { get; set; }
+
+        public virtual DbSet<RaceResultHorse> RaceResultHorses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

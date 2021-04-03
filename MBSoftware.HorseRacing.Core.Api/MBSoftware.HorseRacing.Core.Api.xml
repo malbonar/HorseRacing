@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MBSoftware.HorseRacing.Core.Api</name>
+    </assembly>
+    <members>
+        <member name="M:MBSoftware.HorseRacing.Core.Api.Controllers.HorsesForConditionsController.GetHorsesForConditions(System.DateTime)">
+            <summary>
+            Fetches betting angle for horses that have won in similar conditions
+            </summary>
+            <param name="raceDate">Basis date for form calculation</param>
+            <returns>Horse rating basis same race conditions</returns>
+            <response code="200">Returns Trainer / Jockey form analysis</response>
+            <response code="500">Internal error processing the request</response>
+        </member>
+        <member name="M:MBSoftware.HorseRacing.Core.Api.Controllers.RaceCardController.FetchHorses(System.Int32)">
+            <summary>
+            Fetch Horses for race on today's card. Authorised access
+            </summary>
+            <param name="id">Race Identifier</param>
+            <returns>Horses declared to run in this race</returns>
+            <response code="200">Returns runners for race</response>
+            <response code="401">Unauthorised access. Request must be made from known application</response>
+            <response code="500">Internal error processing the request</response>
+        </member>
+        <member name="M:MBSoftware.HorseRacing.Core.Api.Controllers.RaceCardController.GetRaceCard(System.String,System.String)">
+            <summary>
+            Fetch details for a horse race on today's card. Authorised access
+            </summary>
+            <param name="course">Course where horse race is to be run</param>
+            <param name="raceTime">Time race will be run</param>
+            <returns>Race details</returns>
+            <response code="200">Returns race details</response>
+            <response code="401">Unauthorised access. Request must be made from known application</response>
+            <response code="500">Internal error processing the request</response>
+        </member>
+        <member name="M:MBSoftware.HorseRacing.Core.Api.Controllers.RaceCardController.GetPreviousRuns(System.Int32)">
+            <summary>
+            Fetch previous runs of all horses in a race from today's card. Authorised access
+            </summary>
+            <param name="raceId"></param>
+            <returns></returns>
+            <response code="200">Returns previous runs of all horses in race</response>
+            <response code="401">Unauthorised access. Request must be made from known application</response>
+            <response code="500">Internal error processing the request</response>
+        </member>
+        <member name="M:MBSoftware.HorseRacing.Core.Api.Controllers.RaceMeetingController.Get">
+            <summary>
+            Fetch all meetings for specified date
+            </summary>
+            <returns>All race meetings for specified date</returns>
+            <response code="200">race meetings for specified date</response>
+            <response code="500">Internal error processing the request</response>
+        </member>
+        <member name="M:MBSoftware.HorseRacing.Core.Api.Controllers.RaceResultsController.GetRaceMeetings(System.DateTime)">
+            <summary>
+            Fetch race meetings for date in the past
+            </summary>
+            <param name="meetingsDate"></param>
+            <returns>Horse Race Meetings</returns>
+            <response code="200">Returns Horse Race meetings for selected date</response>
+            <response code="500">Internal error processing the request</response>
+        </member>
+        <member name="M:MBSoftware.HorseRacing.Core.Api.Controllers.RaceResultsController.GetHorsesForRaceResult(System.Int32)">
+            <summary>
+            Fetch the horses that ran in a race
+            </summary>
+            <param name="raceId">Identifier of race</param>
+            <returns>Horses that ran in the race</returns>
+            <response code="200">Returns horses than ran in the race</response>
+            <response code="204">No horses found for this race id</response>
+            <response code="500">Internal error processing the request</response>
+        </member>
+        <member name="M:MBSoftware.HorseRacing.Core.Api.Controllers.TrainerJockeyFormController.Get(System.Int32,System.DateTime)">
+            <summary>
+            Fetch Trainer / Jockey form analysis basis a specified date and either 14 or 30 day form. Authorised access
+            </summary>
+            <param name="days">form basis 14 or 30 days</param>
+            <param name="raceDate">Form data as at this date</param>
+            <returns>Trainer / Jockey form analysis</returns>
+            <response code="200">Returns Trainer / Jockey form analysis</response>
+            <response code="401">Unauthorised access. Request must be made from known application</response>
+            <response code="500">Internal error processing the request</response>
+        </member>
+        <member name="M:MBSoftware.HorseRacing.Core.Api.Controllers.TrainerJockeyFormController.GetLatest(System.Int32)">
+            <summary>
+            Fetch Trainer / Jockey form analysis basis most recent loaded date and either 14 or 30 day form. Authorised access
+            </summary>
+            <param name="days"></param>
+            <returns>Trainer / Jockey form analysis</returns>
+            <response code="200">Returns Trainer / Jockey form analysis</response>
+            <response code="401">Unauthorised access. Request must be made from known application</response>
+            <response code="500">Internal error processing the request</response>
+        </member>
+    </members>
+</doc>

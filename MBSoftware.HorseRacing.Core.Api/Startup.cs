@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
 using MBSoftware.HorseRacing.Core.Api.Middleware;
@@ -67,6 +69,7 @@ namespace MBSoftware.HorseRacing.Core.Api
             services.AddScoped<ITrainerJockeyFormLineProvider, TrainerJockeyFormDataService>();
             services.AddScoped<IRaceMeetingProvider, RaceMeetingDataService>();
             services.AddScoped<IRaceCardProvider, RaceMeetingDataService>();
+            services.AddScoped<IRaceResultsProvider, RaceMeetingResultDataService>();
             services.AddScoped<IHorsesForConditionsProvider, BettingAngulesDataService>();
             services.AddScoped<IDbContextFactory, DbContextProvider>();
 
@@ -74,6 +77,21 @@ namespace MBSoftware.HorseRacing.Core.Api
                 loggingBuilder.AddConsole();
                 loggingBuilder.AddDebug();
             });
+
+            services.AddSwaggerGen(options =>
+            {
+                options.IncludeXmlComments(XmlCommentsFilePath);
+            });
+        }
+
+        static string XmlCommentsFilePath
+        {
+            get
+            {
+                var basePath = AppContext.BaseDirectory;
+                var fileName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name + ".xml";
+                return Path.Combine(basePath, fileName);
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,6 +106,14 @@ namespace MBSoftware.HorseRacing.Core.Api
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "HorseRacing API V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseHttpsRedirection();
@@ -118,6 +144,9 @@ namespace MBSoftware.HorseRacing.Core.Api
                     .ForMember(dest => dest.Horses, act => act.MapFrom(src => src.RaceCardHorse));
                 cfg.CreateMap<DAL.RaceCardHorseHistory, HorsePreviousRun>();
                 cfg.CreateMap<DAL.HorsesForConditions, HorseForConditions>();
+                cfg.CreateMap<DAL.RaceMeetingResult, RaceMeetingResult>();
+                cfg.CreateMap<DAL.RaceResult, RaceResult>();
+                cfg.CreateMap<DAL.RaceResultHorse, RaceResultHorse>();
             });
         }
     }
